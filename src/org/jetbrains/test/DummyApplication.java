@@ -10,6 +10,7 @@ import java.util.Random;
 public class DummyApplication {
     private final List<String> args;
     private Random random = new Random(System.nanoTime());
+    CallTree callTree = new CallTree();
 
     public DummyApplication(List<String> args) {
         this.args = args;
@@ -37,47 +38,41 @@ public class DummyApplication {
     }
 
     private void abc(String s) {
-        //your code here
-
-        sleep();
-        if (stop()) {
-            //do nothing
-        }
-        else if (nextBoolean()) {
-            def(nextArg());
-        }
-        else {
-            xyz(nextArg());
+        try (CallTree.Overseer ignored = callTree.stepIn(s)) {
+            sleep();
+            if (stop()) {
+                //do nothing
+            } else if (nextBoolean()) {
+                def(nextArg());
+            } else {
+                xyz(nextArg());
+            }
         }
     }
 
     private void def(String s) {
-        //your code here
-
-        sleep();
-        if (stop()) {
-            //do nothing
-        }
-        else if (nextBoolean()) {
-            abc(nextArg());
-        }
-        else {
-            xyz(nextArg());
+        try (CallTree.Overseer ignored = callTree.stepIn(s)) {
+            sleep();
+            if (stop()) {
+                //do nothing
+            } else if (nextBoolean()) {
+                abc(nextArg());
+            } else {
+                xyz(nextArg());
+            }
         }
     }
 
     private void xyz(String s) {
-        //your code here
-
-        sleep();
-        if (stop()) {
-            //do nothing
-        }
-        else if (nextBoolean()) {
-            abc(nextArg());
-        }
-        else {
-            def(nextArg());
+        try (CallTree.Overseer ignored = callTree.stepIn(s)) {
+            sleep();
+            if (stop()) {
+                //do nothing
+            } else if (nextBoolean()) {
+                abc(nextArg());
+            } else {
+                def(nextArg());
+            }
         }
     }
 
