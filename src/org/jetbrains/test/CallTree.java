@@ -240,8 +240,14 @@ public class CallTree implements Serializable, Iterable<CallTree.CallTreeEntry> 
         }
 
         private boolean deepEquals(CallTreeEntry other) {
-            return equals(other)
-                    && Arrays.deepEquals(getChildren().toArray(), other.getChildren().toArray());
+            boolean ok = equals(other) && getChildren().size() == other.getChildren().size();
+            if (!ok) {
+                return false;
+            }
+            for (int i = 0; i < getChildren().size(); i++) {
+                ok &= getChildren().get(i).deepEquals(other.getChildren().get(i));
+            }
+            return ok;
         }
 
         @Override
